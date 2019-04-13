@@ -1,0 +1,271 @@
+{
+  'name': 'Bacteria',
+  'children': [
+    {
+      'name': 'Actinobacteria',
+      'children': [
+        {
+          'name': 'Deinococci',
+          'children': [
+            {
+              'name': 'Deinococcales',
+              'children': [
+                {
+                  'name': 'Deinococcaceae',
+                  'children': [
+                    {
+                      'name': 'Deinococcus',
+                      'value': 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          'name': 'Bacilli',
+          'children': [
+            {
+              'name': 'Bacillales',
+              'children': [
+                {
+                  'name': 'Paenibacillaceae',
+                  'children': [
+                    {
+                      'name': 'Paenibacillus',
+                      'value': 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          'name': 'Betaproteobacteria',
+          'children': [
+            {
+              'name': 'Sphingomonadales',
+              'children': [
+                {
+                  'name': 'Acetobacteraceae',
+                  'children': [
+                    {
+                      'name': 'Acidocella',
+                      'value': 1
+                    }
+                  ]
+                },
+                {
+                  'name': 'Methylocystaceae',
+                  'children': [
+                    {
+                      'name': 'Beijerinckia',
+                      'value': 3
+                    },
+                    {
+                      'name': 'Martelella',
+                      'value': 2
+                    },
+                    {
+                      'name': 'Pararhizobium',
+                      'value': 1
+                    },
+                    {
+                      'name': 'Methylocystis',
+                      'value': 1
+                    }
+                  ]
+                },
+                {
+                  'name': 'Sphingomonadaceae',
+                  'children': [
+                    {
+                      'name': 'Novosphingobium',
+                      'value': 2
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              'name': 'Enterobacterales',
+              'children': [
+                {
+                  'name': 'Pseudomonadaceae',
+                  'children': [
+                    {
+                      'name': 'Pseudomonas',
+                      'value': 27
+                    }
+                  ]
+                },
+                {
+                  'name': 'Cellvibrionaceae',
+                  'children': [
+                    {
+                      'name': 'Cellvibrio',
+                      'value': 4
+                    }
+                  ]
+                },
+                {
+                  'name': 'Pectobacteriaceae',
+                  'children': [
+                    {
+                      'name': 'Brenneria',
+                      'value': 1
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              'name': 'Nitrosomonadales',
+              'children': [
+                {
+                  'name': 'Burkholderiaceae',
+                  'children': [
+                    {
+                      'name': 'Comamonas',
+                      'value': 2
+                    },
+                    {
+                      'name': 'Paraburkholderia',
+                      'value': 7
+                    }
+                  ]
+                },
+                {
+                  'name': 'Methylophilaceae',
+                  'children': [
+                    {
+                      'name': 'Methylobacillus',
+                      'value': 1
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          'name': 'Actinobacteria',
+          'children': [
+            {
+              'name': 'Pseudonocardiales',
+              'children': [
+                {
+                  'name': 'Segniliparaceae',
+                  'children': [
+                    {
+                      'name': 'Smaragdicoccus',
+                      'value': 1
+                    },
+                    {
+                      'name': 'Millisia',
+                      'value': 1
+                    },
+                    {
+                      'name': 'Hoyosella',
+                      'value': 2
+                    },
+                    {
+                      'name': 'Tsukamurella',
+                      'value': 4
+                    },
+                    {
+                      'name': 'Segniliparus',
+                      'value': 2
+                    }
+                  ]
+                },
+                {
+                  'name': 'Cryptosporangiaceae',
+                  'children': [
+                    {
+                      'name': 'Frankia',
+                      'value': 5
+                    },
+                    {
+                      'name': 'Cryptosporangium',
+                      'value': 1
+                    }
+                  ]
+                },
+                {
+                  'name': 'Micromonosporaceae',
+                  'children': [
+                    {
+                      'name': 'Dactylosporangium',
+                      'value': 1
+                    }
+                  ]
+                },
+                {
+                  'name': 'Streptomycetaceae',
+                  'children': [
+                    {
+                      'name': 'Kitasatospora',
+                      'value': 2
+                    }
+                  ]
+                },
+                {
+                  'name': 'Streptosporangiaceae',
+                  'children': [
+                    {
+                      'name': 'Streptosporangium',
+                      'value': 2
+                    }
+                  ]
+                },
+                {
+                  'name': 'Microbacteriaceae',
+                  'children': [
+                    {
+                      'name': 'Cellulomonas',
+                      'value': 1
+                    },
+                    {
+                      'name': 'Microbacterium',
+                      'value': 3
+                    }
+                  ]
+                },
+                {
+                  'name': 'Kineosporiaceae',
+                  'children': [
+                    {
+                      'name': 'Kineococcus',
+                      'value': 2
+                    }
+                  ]
+                },
+                {
+                  'name': 'Nocardioidaceae',
+                  'children': [
+                    {
+                      'name': 'Aeromicrobium',
+                      'value': 2
+                    }
+                  ]
+                },
+                {
+                  'name': 'Pseudonocardiaceae',
+                  'children': [
+                    {
+                      'name': 'Pseudonocardia',
+                      'value': 2
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

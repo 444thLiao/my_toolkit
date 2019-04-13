@@ -1,0 +1,17 @@
+
+Entrez for
+1. 通过tid获取metadata
+2. 通过nid获取基因组数据
+
+seq for
+1. blast的def
+2.
+
+Tree for
+
+
+viz for
+1. sunburst图（用以表示单样本内具有层次结构的物种（特征）的可视化）
+2. 转化常用的phylum，order，class。。。类似table为具有层次结构的递归dict的function
+
+iter_for.py 迅速分块已有的list
