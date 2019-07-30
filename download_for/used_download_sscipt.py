@@ -9,7 +9,6 @@ from ftplib import FTP
 from os.path import join, basename
 from tqdm import tqdm
 import click
-import wget
 
 
 def get_dirname_multiple(path, n=1):
@@ -67,8 +66,9 @@ def cli(odir, target, infile):
             infile = collect_dict["domain_refseq"][target.lower()]
         else:
             raise SyntaxError("target is not inside required list, infile also not given.")
-        wget.download(infile, out=odir)
-        infile = join(odir, basename(infile))
+        os.system('cd {odir}; wget {link}'.format(odir=os.path.join(odir, target),
+                                                  link=infile))
+        infile = join(odir, target, basename(infile))
 
     if (not os.path.exists(infile)):
         raise SyntaxError("infile doesn't exist.")
