@@ -1,0 +1,7 @@
+plotly
+luigi
+tqdm
+pandas
+scikit-bio
+biopython
+pyvcf==0.6.8
