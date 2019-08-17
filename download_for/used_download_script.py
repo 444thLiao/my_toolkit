@@ -51,32 +51,10 @@ def rewrite_md5(infile):
         f1.write(result)
 
 
-@click.command()
-@click.option("--odir", '-o', required=True)
-@click.option("--target", '-t', required=False, default='all')
-@click.option("--infile", '-i', required=False, default=None)
-@click.option("--only_infile", is_flag=True, )
-def cli(odir, target, infile):
-    odir = os.path.abspath(odir)
-    collect_dict = get_constant()
-    if infile is None:
-        if target == 'all':
-            infile = collect_dict['refseq']
-        elif target.lower() in collect_dict["domain_refseq"]:
-            infile = collect_dict["domain_refseq"][target.lower()]
-        else:
-            raise SyntaxError("target is not inside required list, infile also not given.")
-        os.system('cd {odir}; wget {link}'.format(odir=os.path.join(odir, target),
-                                                  link=infile))
-        infile = join(odir, target, basename(infile))
-
-    if (not os.path.exists(infile)):
-        raise SyntaxError("infile doesn't exist.")
-    else:
-        main(odir, infile, target)
 
 
 def main(odir, infile, target, max_try=5):
+    posidx = 0
     assembly_summary_df = pd.read_csv(infile, sep='\t', header=None, comment='#', low_memory=False)
     # download from assembly_summary.txt
 
@@ -93,7 +71,11 @@ def main(odir, infile, target, max_try=5):
 
     for idx, row in tqdm(assembly_summary_df.iterrows(),
                          total=assembly_summary_df.shape[0]):
-        path = row[19]
+        if posidx == 0:
+            for rid,each_ in enumerate(row):
+                if str(each_).startswith("ftp://ftp.ncbi.nlm.nih.gov/"):
+                    posidx = rid
+        path = row[posidx]
         if pd.isna(path):
             # in case there is missing path
             continue
@@ -132,3 +114,31 @@ def main(odir, infile, target, max_try=5):
         rewrite_md5(ofile)
         # back to the root path
         ftp.cwd('/')
+
+#
+# @click.command()
+# @click.option("--odir", '-o', required=True)
+# @click.option("--target", '-t', required=False, default='all')
+# @click.option("--infile", '-i', required=False, default=None)
+# @click.option("--only_infile", is_flag=True, )
+# def cli(odir, target, infile,only_infile=False):
+#     odir = os.path.abspath(odir)
+#     collect_dict = get_constant()
+#     if infile is None:
+#         if target == 'all':
+#             infile = collect_dict['refseq']
+#         elif target.lower() in collect_dict["domain_refseq"]:
+#             infile = collect_dict["domain_refseq"][target.lower()]
+#         else:
+#             raise SyntaxError("target is not inside required list, infile also not given.")
+#         os.system('cd {odir}; wget {link}'.format(odir=os.path.join(odir, target),
+#                                                   link=infile))
+#         infile = join(odir, target, basename(infile))
+#
+#     if (not os.path.exists(infile)):
+#         raise SyntaxError("infile doesn't exist.")
+#     else:
+#         main(odir, infile, target)
+#
+# if __name__ == '__main__':
+#     cli()
