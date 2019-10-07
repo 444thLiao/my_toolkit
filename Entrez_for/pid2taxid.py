@@ -22,7 +22,11 @@ def print_tax(pid):
     names = ncbi.get_taxid_translator(lineage)
     rank2name = {v:names[t] for t,v in ranks.items()}
 
-    if rank2name['phylum'] == 'Proteobacteria':
+    if rank2name.get('phylum','') == 'Proteobacteria':
         print(rank2name['class'])
     else:
-        print(rank2name['phylum'])
+        phy = rank2name.get('phylum','')
+        if not phy:
+            print(tid)
+        else:
+            print(phy)
