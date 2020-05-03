@@ -14,6 +14,7 @@ LEGEND_COLORS,{legend_colors}
 LEGEND_LABELS,{legend_labels}
 """
 
+
 ############################################################
 # for color
 def get_annotated_text(data_file,
