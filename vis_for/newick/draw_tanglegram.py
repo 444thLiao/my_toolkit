@@ -8,6 +8,7 @@ Further, it also implement some useful transferring function from iTOL.
 from collections import defaultdict
 
 import click
+import os
 import plotly
 import plotly.graph_objs as go
 from tqdm import tqdm
@@ -144,29 +145,38 @@ def main(newick1, newick2,
     fig.layout.xaxis3.zeroline = False
     fig.layout.yaxis.zeroline = False
     fig.layout.yaxis.showticklabels = False
+
     return fig
 
 
 @click.command()
-@click.option("-newick1",help="first tree file, would be placed on the left")
-@click.option("-newick2",help="second tree file, would be placed on the right")
-@click.option("-cf1",help="the file for color annotation to first tree and the links")
-@click.option("-cf2",help="the file for color annotation to second tree ")
-@click.option("-length", default="max",help="the length of leaves you want to extend to. normally all leaves will extend to identical length which similar to the longest one")
-@click.option("-sep", default="_",help="the separator which used to . ")
+@click.option("-newick1", help="first tree file, would be placed on the left")
+@click.option("-newick2", help="second tree file, would be placed on the right")
+@click.option("-output", "output_file", help="the path of html output ")
+@click.option("-cf1", help="the file for color annotation to first tree and the links")
+@click.option("-cf2", help="the file for color annotation to second tree ")
+@click.option("-length", default="max", help="the length of leaves you want to extend to. normally all leaves will extend to identical length which similar to the longest one")
+@click.option("-sep", default="_", help="the separator which used to . ")
 @click.option("-extra_set", "extra_set", is_flag=True, default=False)
-def cli(newick1, newick2, cf1, cf2, length, sep, extra_set):
-    main(newick1=newick1,
-         newick2=newick2,
-         color_file1=cf1,
-         color_file2=cf2,
-         l_legnth=length,
-         sep=sep,
-         extra_set=extra_set)
+def cli(newick1, newick2, output_file, cf1, cf2, length, sep, extra_set):
+    fig = main(newick1=newick1,
+               newick2=newick2,
+               color_file1=cf1,
+               color_file2=cf2,
+               l_legnth=length,
+               sep=sep,
+               extra_set=extra_set)
+
+    fig.layout.width = 1400
+    fig.layout.height = 3000
+
+    if not exists(dirname(output_file)):
+        os.makedirs(dirname(output_file))
+    fig.write_html(output_file)
 
 
 if __name__ == '__main__':
-    from os.path import dirname, join
+    from os.path import dirname, join, exists
 
     example_dir = join(dirname(dirname(dirname(__file__))), 'example', 'tanglegram')
 
