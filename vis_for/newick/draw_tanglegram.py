@@ -16,6 +16,9 @@ from tqdm import tqdm
 from Tree_for.api_IO import read_tree
 from Tree_for.plotly_draw_newick_tree import main as get_plotly_data_from_newick
 
+def get_leafs(newick):
+    t = read_tree(newick, format='auto')
+    return t.get_leaf_names()
 
 def get_preferred_scale(newick1, newick2):
     t1 = read_tree(newick1, format='auto')
@@ -27,7 +30,14 @@ def get_preferred_scale(newick1, newick2):
     return 1 / yscale
 
 
-def parse_color_scheme_files(file, extra_set=False):
+def parse_color_scheme_files(file, extra_set=False,get_raw_name=False):
+    """
+
+    :param file:
+    :param extra_set:
+    :param get_raw_name:
+    :return:
+    """
     lines = open(file).read().split('\n')
     lines = [_ for _ in lines if _]
     field_labels = [_ for _ in lines if _.startswith("FIELD_LABELS")]
@@ -48,17 +58,22 @@ def parse_color_scheme_files(file, extra_set=False):
             name = vs[0]
             color = [c for c, _ in zip(colors, vs[1:]) if str(_) != '0']
             if color:
-                name2color[name] = color[0]  # code. would overlap.. be careful..
+                name2color[name] = color[0]  # would overlap.. be careful..
+
     else:
         lines = [_ for _ in lines[lines.index("DATA") + 1:] if _ and not _.startswith('#')]
+        c2name = {}
         for line in lines:
-            name = line.split(sep)[0]
+            values = line.split(sep)
+            name = values[0]
             if "range" in line:
-                color = line.split(sep)[2]
+                color = values[2]
+                c2name[color] = values[-1]
             else:
-                color = line.split(sep)[1]
+                color = values[1]
             name2color[name] = color
-
+        if get_raw_name:
+            return c2name
     if str(extra_set) == 'rename':
         new_name2color = {k.split('_')[-1].replace('.', 'v'): v
                           for k, v in name2color.items()}
@@ -68,9 +83,12 @@ def parse_color_scheme_files(file, extra_set=False):
 
 def main(newick1, newick2,
          color_file1, color_file2,
-         l_legnth='max', sep='_', extra_set=False):
+         l_legnth='max', sep='_', extra_set=False, identical=False):
+    left_leaves = get_leafs(newick1)
+    right_leaves = get_leafs(newick2)
     yscale = get_preferred_scale(newick1, newick2)
-    fig = plotly.subplots.make_subplots(rows=1, cols=3, shared_yaxes=True)
+    fig = plotly.subplots.make_subplots(rows=1, cols=3, shared_yaxes=True,
+                                        horizontal_spacing=0.05/3)
 
     # get dendrogram parts
     tqdm.write('drawing dendrograms')
@@ -82,6 +100,7 @@ def main(newick1, newick2,
     # add colors or something else into above datas
     l2color = {_: '#000000' for _ in labels_draw_text}
     r2color = {_: '#000000' for _ in labels_draw_text2}
+
     l2color.update(parse_color_scheme_files(color_file1, extra_set=False))
     r2color.update(parse_color_scheme_files(color_file2, extra_set=extra_set))
     # add color into generated trace
@@ -106,14 +125,17 @@ def main(newick1, newick2,
 
     # init data of middle part
     # get the y-coordinate information from below. put them into two dict.
-    left_data = dict(zip(labels_draw_text, labels_y))
-    right_data = dict(zip(labels_draw_text2, labels_y2))
+    left_data = {k:v for k,v in dict(zip(labels_draw_text, labels_y)).items() if k in left_leaves}
+    right_data = {k:v for k,v in dict(zip(labels_draw_text2, labels_y2)).items() if k in right_leaves}
 
     # get mapping relationship, default is from left to the right.. one to multi
     # so, the leaf names from the left tree should be the part of right, separate with `underline` or `space`
     l2r = defaultdict(list)
     for leaf1 in left_data.keys():
-        leaf2s = [r for r in right_data.keys() if leaf1.split(sep)[0] == r]
+        if identical:
+            leaf2s = [r for r in right_data.keys() if leaf1 == r]
+        else:
+            leaf2s = [r for r in right_data.keys() if leaf1.split(sep)[0] == r]
         l2r[leaf1] = leaf2s
 
     # init the data from above mapping dict
@@ -158,14 +180,16 @@ def main(newick1, newick2,
 @click.option("-length", default="max", help="the length of leaves you want to extend to. normally all leaves will extend to identical length which similar to the longest one")
 @click.option("-sep", default="_", help="the separator which used to . ")
 @click.option("-extra_set", "extra_set", is_flag=True, default=False)
-def cli(newick1, newick2, output_file, cf1, cf2, length, sep, extra_set):
+@click.option("-identical", "identical", is_flag=True, default=False,help='if the leaf names are identical. you should pass this parameter or redundant lines will show up ')
+def cli(newick1, newick2, output_file, cf1, cf2, length, sep, extra_set,identical):
     fig = main(newick1=newick1,
                newick2=newick2,
                color_file1=cf1,
                color_file2=cf2,
                l_legnth=length,
                sep=sep,
-               extra_set=extra_set)
+               extra_set=extra_set,
+               identical=identical)
 
     fig.layout.width = 1400
     fig.layout.height = 3000
